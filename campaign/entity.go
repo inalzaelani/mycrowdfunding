@@ -1,6 +1,9 @@
 package campaign
 
-import "time"
+import (
+	"latihanGo/user"
+	"time"
+)
 
 type Campaign struct {
 	ID             int
@@ -8,7 +11,7 @@ type Campaign struct {
 	Name           string
 	ShortDesc      string
 	Description    string
-	Perk           string
+	Perks          string
 	BackerCount    int
 	GoalAmount     int
 	CurrentAmout   int
@@ -16,6 +19,7 @@ type Campaign struct {
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	CampaignImages []CampaignImage
+	User           user.User
 }
 
 type CampaignImage struct {
