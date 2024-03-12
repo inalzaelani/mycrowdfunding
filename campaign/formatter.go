@@ -20,7 +20,7 @@ func FormatCampaign(campaign Campaign) CampaignFormatter {
 	campaignFormatter.Name = campaign.Name
 	campaignFormatter.ShortDesc = campaign.ShortDesc
 	campaignFormatter.GoalAmount = campaign.GoalAmount
-	campaignFormatter.CurrentAmount = campaign.CurrentAmout
+	campaignFormatter.CurrentAmount = campaign.CurrentAmount
 	campaignFormatter.Slug = campaign.Slug
 	campaignFormatter.ImageUrl = ""
 
@@ -75,7 +75,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	campaignDetailFormatter.Description = campaign.Description
 	campaignDetailFormatter.ImageUrl = ""
 	campaignDetailFormatter.GoalAmount = campaign.GoalAmount
-	campaignDetailFormatter.CurrentAmount = campaign.CurrentAmout
+	campaignDetailFormatter.CurrentAmount = campaign.CurrentAmount
 	campaignDetailFormatter.Slug = campaign.Slug
 	campaignDetailFormatter.UserID = campaign.UserID
 	if len(campaign.CampaignImages) > 0 {
