@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"latihanGo/campaign"
 	"latihanGo/user"
 	"time"
 )
@@ -14,5 +15,6 @@ type Transaction struct {
 	Code       string
 	User       user.User
 	CreatedAt  time.Time
-	UpdatedAte time.Time
+	UpdatedAt  time.Time
+	Campaign   campaign.Campaign
 }
