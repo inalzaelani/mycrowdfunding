@@ -9,6 +9,7 @@ import (
 	"latihanGo/campaign"
 	"latihanGo/handler"
 	"latihanGo/helper"
+	"latihanGo/payment"
 	"latihanGo/transaction"
 	"latihanGo/user"
 	"log"
@@ -31,7 +32,8 @@ func main() {
 	userService := user.NewService(userRepository)
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
-	transactionService := transaction.NewService(transactionRepository, campaignRepository)
+	paymentService := payment.NewService()
+	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 
 	userHandler := handler.NewUserHandler(userService, authService)
 	campaignHandler := handler.NewCampaignHandler(campaignService)
@@ -54,6 +56,7 @@ func main() {
 
 	api.GET("/campaign/:id/transaction", authMiddleware(authService, userService), transactionHandler.GetCampaignTransaction)
 	api.GET("/transactions", authMiddleware(authService, userService), transactionHandler.GetUserTransactions)
+	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateTransaction)
 	router.Run()
 }
 
