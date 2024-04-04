@@ -10,6 +10,7 @@ type CampaignFormatter struct {
 	ImageUrl      string `json:"image_url"`
 	GoalAmount    int    `json:"goal_amount"`
 	CurrentAmount int    `json:"current_amount"`
+	BackerCount   int    `json:"backer_count"`
 	Slug          string `json:"slug"`
 }
 
@@ -21,6 +22,7 @@ func FormatCampaign(campaign Campaign) CampaignFormatter {
 	campaignFormatter.ShortDesc = campaign.ShortDesc
 	campaignFormatter.GoalAmount = campaign.GoalAmount
 	campaignFormatter.CurrentAmount = campaign.CurrentAmount
+	campaignFormatter.BackerCount = campaign.BackerCount
 	campaignFormatter.Slug = campaign.Slug
 	campaignFormatter.ImageUrl = ""
 
@@ -50,6 +52,7 @@ type CampaignDetailFormatter struct {
 	ImageUrl      string                   `json:"imageUrl"`
 	GoalAmount    int                      `json:"goal_amount"`
 	CurrentAmount int                      `json:"current_amount"`
+	BackerCount   int                      `json:"backer_count"`
 	UserID        int                      `json:"user_id"`
 	Slug          string                   `json:"slug"`
 	Perks         []string                 `json:"perks"`
@@ -76,6 +79,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	campaignDetailFormatter.ImageUrl = ""
 	campaignDetailFormatter.GoalAmount = campaign.GoalAmount
 	campaignDetailFormatter.CurrentAmount = campaign.CurrentAmount
+	campaignDetailFormatter.BackerCount = campaign.BackerCount
 	campaignDetailFormatter.Slug = campaign.Slug
 	campaignDetailFormatter.UserID = campaign.UserID
 	if len(campaign.CampaignImages) > 0 {

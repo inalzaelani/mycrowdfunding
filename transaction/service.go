@@ -4,6 +4,7 @@ import (
 	"errors"
 	"latihanGo/campaign"
 	"latihanGo/payment"
+	"strconv"
 )
 
 type service struct {
@@ -16,6 +17,7 @@ type Service interface {
 	GetTransactionByCampaignId(input GetCampaignTransactionInput) ([]Transaction, error)
 	GetTransactionByUserId(userId int) ([]Transaction, error)
 	CreateTransaction(input CreateTransactionInput) (Transaction, error)
+	ProcessPayment(input TransactionNotificationInput) error
 }
 
 func NewService(repository Repository, campaignRepository campaign.Repository, paymentService payment.Service) *service {
@@ -82,4 +84,40 @@ func (s *service) CreateTransaction(input CreateTransactionInput) (Transaction, 
 
 	return newTransaction, nil
 
+}
+func (s *service) ProcessPayment(input TransactionNotificationInput) error {
+	transaction_id, _ := strconv.Atoi(input.OrderId)
+
+	transaction, err := s.repository.GetById(transaction_id)
+	if err != nil {
+		return err
+	}
+
+	if input.PaymentType == "credit_card" && input.TransactionStatus == "capture" && input.FraudStatus == "accept" {
+		transaction.Status = "PAID"
+	} else if input.TransactionStatus == "settlement" {
+		transaction.Status = "PAID"
+	} else if input.TransactionStatus == "cancel" || input.TransactionStatus == "deny" || input.TransactionStatus == "expire" {
+		transaction.Status = "CANCELED"
+	}
+
+	updatedTransaction, err := s.repository.Update(transaction)
+	if err != nil {
+		return err
+	}
+	campaign, err := s.campaignRepository.FindById(updatedTransaction.CampaignID)
+	if err != nil {
+		return err
+	}
+
+	if updatedTransaction.Status == "PAID" {
+		campaign.BackerCount += 1
+		campaign.CurrentAmount += updatedTransaction.Amount
+
+		_, err = s.campaignRepository.Update(campaign)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

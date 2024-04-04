@@ -3,17 +3,19 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"latihanGo/helper"
+	"latihanGo/payment"
 	"latihanGo/transaction"
 	"latihanGo/user"
 	"net/http"
 )
 
 type transcationHandler struct {
-	service transaction.Service
+	service        transaction.Service
+	paymentService payment.Service
 }
 
-func NewTransactionHandler(service transaction.Service) *transcationHandler {
-	return &transcationHandler{service}
+func NewTransactionHandler(service transaction.Service, paymentService payment.Service) *transcationHandler {
+	return &transcationHandler{service, paymentService}
 }
 
 func (h *transcationHandler) GetCampaignTransaction(c *gin.Context) {
@@ -83,5 +85,27 @@ func (h *transcationHandler) CreateTransaction(c *gin.Context) {
 
 	response := helper.APIResponse("Success create transaction", http.StatusOK, "success", transaction.FormatTransaction(newTransaction))
 	c.JSON(http.StatusOK, response)
+	return
+}
+
+func (h *transcationHandler) GetNotification(c *gin.Context) {
+	var input transaction.TransactionNotificationInput
+
+	err := c.ShouldBind(input)
+
+	if err != nil {
+		response := helper.APIResponse("Failed push notification transaction", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	err = h.service.ProcessPayment(input)
+	if err != nil {
+		response := helper.APIResponse("Failed push notification transaction", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	c.JSON(http.StatusOK, input)
 	return
 }
