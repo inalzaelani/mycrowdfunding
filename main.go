@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-	dsn := "root:@tcp(127.0.0.1:3306)/latihan_golang_nuxt?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "sql6701290:z3C4gkUymp@tcp(sql6.freemysqlhosting.net:3306)/sql6701290?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
