@@ -91,7 +91,7 @@ func (h *transcationHandler) CreateTransaction(c *gin.Context) {
 func (h *transcationHandler) GetNotification(c *gin.Context) {
 	var input transaction.TransactionNotificationInput
 
-	err := c.ShouldBind(input)
+	err := c.ShouldBindJSON(&input)
 
 	if err != nil {
 		response := helper.APIResponse("Failed push notification transaction", http.StatusBadRequest, "error", nil)
