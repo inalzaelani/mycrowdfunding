@@ -9,7 +9,7 @@ type repository struct {
 type Repository interface {
 	GetByCampaignId(campaignID int) ([]Transaction, error)
 	GetByUserId(userId int) ([]Transaction, error)
-	GetById(idd int) (Transaction, error)
+	GetById(id int) (Transaction, error)
 	Save(transaction Transaction) (Transaction, error)
 	Update(transaction Transaction) (Transaction, error)
 }
